@@ -1,35 +1,58 @@
 open Tape;
 
-test("THIS SHOULD PASS: ok and notOk", t => {
+test("ok and notOk", t => {
   t.plan(2);
   t.ok(true, ~message="true is, well, true");
   t.notOk(false, ~message="false is, well, false");
 });
 
-test("THIS SHOULD PASS: equalStr, equalInt, and equalFloat", t => {
+test("equalStr, equalInt, and equalFloat", t => {
   t.plan(3);
   t.equalStr("foo", "foo");
   t.equalInt(12, 12, ~message="numbers are identical");
   t.equalFloat(3.14, 3.14, ~message="pi is pi");
 });
 
-test("THIS SHOULD PASS: skip and endTest", t => {
+testSkip("testSkip", t => {
+  t.plan(1);
+  t.skip("you won't see this");
+});
+
+test("comment, skip and endTest", t => {
+  t.comment("----- this is a comment -----");
   t.skip("skipping");
   t.endTest();
 });
 
-test("THIS SHOULD PASS: timeoutAfter and endTestIfNoErr", t => {
+test("timeoutAfter and endTestIfNoErr", t => {
   t.timeoutAfter(123);
   t.endTestIfNoErr(false);
 });
 
-test("THIS SHOULD PASS: pass and error", t => {
+test("pass and error", t => {
   t.plan(2);
   t.pass("workie");
   t.error(Js.Nullable.null, ~message="no error");
 });
 
-test("THIS SHOULD FAIL: fail", t => {
+test("test with a subtest", t => {
   t.plan(1);
-  t.fail("no workie");
+  t.test("here is the subtest", st => {
+    st.plan(1);
+    st.skip("subtest worked");
+  });
 });
+/* comment this back in to see .fail() work */
+/*
+ test("THIS SHOULD FAIL: fail", t => {
+   t.plan(1);
+   t.fail("no workie");
+ });
+ */
+/* comment this back in to see testOnly() work */
+/*
+ testOnly("ONLY RUN THIS", t => {
+   t.plan(1);
+   t.skip("only");
+ });
+ */

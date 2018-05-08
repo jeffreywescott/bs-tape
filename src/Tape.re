@@ -14,6 +14,8 @@ type assertInterface = {
   equalStr: (~message: string=?, string, string) => unit,
   equalInt: (~message: string=?, int, int) => unit,
   equalFloat: (~message: string=?, float, float) => unit,
+  comment: string => unit,
+  test: (string, assertInterface => unit) => unit,
 };
 
 [@bs.module "tape"]
@@ -59,28 +61,41 @@ external _equalFloat :
   (assertInterface, float, float, ~message: option(string)=?) => unit =
   "equal";
 
-let test = (name, f) =>
-  _test(
-    name,
-    t => {
-      let assertImpl = {
-        plan: n => _plan(t, n),
-        endTest: () => _end(t, false),
-        endTestIfNoErr: b => _end(t, b),
-        fail: s => _fail(t, s),
-        pass: s => _pass(t, s),
-        timeoutAfter: n => _timeoutAfter(t, n),
-        skip: s => _skip(t, s),
-        ok: (~message=?, b) => _ok(t, b, ~message),
-        notOk: (~message=?, b) => _notOk(t, b, ~message),
-        error: (~message=?, o) => _error(t, o, ~message),
-        equalStr: (~message=?, actual, expected) =>
-          _equalStr(t, actual, expected, ~message),
-        equalInt: (~message=?, actual, expected) =>
-          _equalInt(t, actual, expected, ~message),
-        equalFloat: (~message=?, actual, expected) =>
-          _equalFloat(t, actual, expected, ~message),
-      };
-      f(assertImpl);
-    },
-  );
+[@bs.send] external _comment : (assertInterface, string) => unit = "comment";
+
+[@bs.send]
+external _subtest : (assertInterface, string, assertInterface => unit) => unit =
+  "test";
+
+[@bs.module "tape"] [@bs.scope "test"]
+external _testOnly : (string, assertInterface => unit) => unit = "only";
+
+[@bs.module "tape"] [@bs.scope "test"]
+external _testSkip : (string, assertInterface => unit) => unit = "skip";
+
+let rec _assertFactory = t => {
+  plan: n => _plan(t, n),
+  endTest: () => _end(t, false),
+  endTestIfNoErr: b => _end(t, b),
+  fail: s => _fail(t, s),
+  pass: s => _pass(t, s),
+  timeoutAfter: n => _timeoutAfter(t, n),
+  skip: s => _skip(t, s),
+  ok: (~message=?, b) => _ok(t, b, ~message),
+  notOk: (~message=?, b) => _notOk(t, b, ~message),
+  error: (~message=?, o) => _error(t, o, ~message),
+  equalStr: (~message=?, actual, expected) =>
+    _equalStr(t, actual, expected, ~message),
+  equalInt: (~message=?, actual, expected) =>
+    _equalInt(t, actual, expected, ~message),
+  equalFloat: (~message=?, actual, expected) =>
+    _equalFloat(t, actual, expected, ~message),
+  comment: s => _comment(t, s),
+  test: (name, f) => _subtest(t, name, t => f(_assertFactory(t))),
+};
+
+let test = (name, f) => _test(name, t => f(_assertFactory(t)));
+
+let testOnly = (name, f) => _testOnly(name, t => f(_assertFactory(t)));
+
+let testSkip = (name, f) => _testSkip(name, t => f(_assertFactory(t)));
