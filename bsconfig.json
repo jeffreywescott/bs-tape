@@ -1,0 +1,23 @@
+{
+  "name": "bs-tape",
+  "bs-dependencies": [],
+  "bs-dev-dependencies": [],
+  "bsc-flags": [
+    "-bs-super-errors"
+  ],
+  "package-specs": {
+    "module": "commonjs"
+  },
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    },
+    {
+      "dir": "example",
+      "subdirs": true
+    }
+  ],
+  "refmt": 3,
+  "suffix": ".bs.js"
+}
