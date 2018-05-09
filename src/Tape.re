@@ -1,6 +1,6 @@
 type error = Js.Nullable.t({. "message": string});
 
-type assertInterface = {
+type testFuncs = {
   plan: int => unit,
   endTest: unit => unit,
   endTestIfNoErr: bool => unit,
@@ -15,62 +15,57 @@ type assertInterface = {
   equalInt: (~message: string=?, int, int) => unit,
   equalFloat: (~message: string=?, float, float) => unit,
   comment: string => unit,
-  test: (string, assertInterface => unit) => unit,
+  test: (string, testFuncs => unit) => unit,
 };
 
 [@bs.module "tape"]
-external _test : (string, assertInterface => unit) => unit = "test";
+external _test : (string, testFuncs => unit) => unit = "test";
 
-[@bs.send] external _plan : (assertInterface, int) => unit = "plan";
+[@bs.send] external _plan : (testFuncs, int) => unit = "plan";
 
-[@bs.send] external _end : (assertInterface, bool) => unit = "end";
+[@bs.send] external _end : (testFuncs, bool) => unit = "end";
 
-[@bs.send] external _fail : (assertInterface, string) => unit = "fail";
+[@bs.send] external _fail : (testFuncs, string) => unit = "fail";
 
-[@bs.send] external _pass : (assertInterface, string) => unit = "pass";
+[@bs.send] external _pass : (testFuncs, string) => unit = "pass";
 
-[@bs.send]
-external _timeoutAfter : (assertInterface, int) => unit = "timeoutAfter";
+[@bs.send] external _timeoutAfter : (testFuncs, int) => unit = "timeoutAfter";
 
-[@bs.send] external _skip : (assertInterface, string) => unit = "skip";
-
-[@bs.send]
-external _ok : (assertInterface, bool, Js.Nullable.t(string)) => unit = "ok";
+[@bs.send] external _skip : (testFuncs, string) => unit = "skip";
 
 [@bs.send]
-external _notOk : (assertInterface, bool, Js.Nullable.t(string)) => unit =
-  "notOk";
+external _ok : (testFuncs, bool, Js.Nullable.t(string)) => unit = "ok";
 
 [@bs.send]
-external _error : (assertInterface, error, Js.Nullable.t(string)) => unit =
-  "error";
+external _notOk : (testFuncs, bool, Js.Nullable.t(string)) => unit = "notOk";
+
+[@bs.send]
+external _error : (testFuncs, error, Js.Nullable.t(string)) => unit = "error";
 
 [@bs.send]
 external _equalStr :
-  (assertInterface, string, string, Js.Nullable.t(string)) => unit =
+  (testFuncs, string, string, Js.Nullable.t(string)) => unit =
   "equal";
 
 [@bs.send]
-external _equalInt :
-  (assertInterface, int, int, Js.Nullable.t(string)) => unit =
+external _equalInt : (testFuncs, int, int, Js.Nullable.t(string)) => unit =
   "equal";
 
 [@bs.send]
 external _equalFloat :
-  (assertInterface, float, float, Js.Nullable.t(string)) => unit =
+  (testFuncs, float, float, Js.Nullable.t(string)) => unit =
   "equal";
 
-[@bs.send] external _comment : (assertInterface, string) => unit = "comment";
+[@bs.send] external _comment : (testFuncs, string) => unit = "comment";
 
 [@bs.send]
-external _subtest : (assertInterface, string, assertInterface => unit) => unit =
-  "test";
+external _subtest : (testFuncs, string, testFuncs => unit) => unit = "test";
 
 [@bs.module "tape"] [@bs.scope "test"]
-external _testOnly : (string, assertInterface => unit) => unit = "only";
+external _testOnly : (string, testFuncs => unit) => unit = "only";
 
 [@bs.module "tape"] [@bs.scope "test"]
-external _testSkip : (string, assertInterface => unit) => unit = "skip";
+external _testSkip : (string, testFuncs => unit) => unit = "skip";
 
 let rec _assertFactory = t => {
   plan: n => _plan(t, n),
