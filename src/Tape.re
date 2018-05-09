@@ -35,30 +35,29 @@ external _timeoutAfter : (assertInterface, int) => unit = "timeoutAfter";
 [@bs.send] external _skip : (assertInterface, string) => unit = "skip";
 
 [@bs.send]
-external _ok : (assertInterface, bool, ~message: option(string)=?) => unit =
-  "ok";
+external _ok : (assertInterface, bool, Js.Nullable.t(string)) => unit = "ok";
 
 [@bs.send]
-external _notOk : (assertInterface, bool, ~message: option(string)=?) => unit =
+external _notOk : (assertInterface, bool, Js.Nullable.t(string)) => unit =
   "notOk";
 
 [@bs.send]
-external _error : (assertInterface, error, ~message: option(string)=?) => unit =
+external _error : (assertInterface, error, Js.Nullable.t(string)) => unit =
   "error";
 
 [@bs.send]
 external _equalStr :
-  (assertInterface, string, string, ~message: option(string)=?) => unit =
+  (assertInterface, string, string, Js.Nullable.t(string)) => unit =
   "equal";
 
 [@bs.send]
 external _equalInt :
-  (assertInterface, int, int, ~message: option(string)=?) => unit =
+  (assertInterface, int, int, Js.Nullable.t(string)) => unit =
   "equal";
 
 [@bs.send]
 external _equalFloat :
-  (assertInterface, float, float, ~message: option(string)=?) => unit =
+  (assertInterface, float, float, Js.Nullable.t(string)) => unit =
   "equal";
 
 [@bs.send] external _comment : (assertInterface, string) => unit = "comment";
@@ -81,15 +80,15 @@ let rec _assertFactory = t => {
   pass: s => _pass(t, s),
   timeoutAfter: n => _timeoutAfter(t, n),
   skip: s => _skip(t, s),
-  ok: (~message=?, b) => _ok(t, b, ~message),
-  notOk: (~message=?, b) => _notOk(t, b, ~message),
-  error: (~message=?, o) => _error(t, o, ~message),
+  ok: (~message=?, b) => _ok(t, b, Js.Nullable.fromOption(message)),
+  notOk: (~message=?, b) => _notOk(t, b, Js.Nullable.fromOption(message)),
+  error: (~message=?, o) => _error(t, o, Js.Nullable.fromOption(message)),
   equalStr: (~message=?, actual, expected) =>
-    _equalStr(t, actual, expected, ~message),
+    _equalStr(t, actual, expected, Js.Nullable.fromOption(message)),
   equalInt: (~message=?, actual, expected) =>
-    _equalInt(t, actual, expected, ~message),
+    _equalInt(t, actual, expected, Js.Nullable.fromOption(message)),
   equalFloat: (~message=?, actual, expected) =>
-    _equalFloat(t, actual, expected, ~message),
+    _equalFloat(t, actual, expected, Js.Nullable.fromOption(message)),
   comment: s => _comment(t, s),
   test: (name, f) => _subtest(t, name, t => f(_assertFactory(t))),
 };

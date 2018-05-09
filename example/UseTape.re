@@ -2,8 +2,8 @@ open Tape;
 
 test("ok and notOk", t => {
   t.plan(2);
-  t.ok(true, ~message="true is, well, true");
-  t.notOk(false, ~message="false is, well, false");
+  t.ok(true);
+  t.notOk(false, ~message="should be falsey");
 });
 
 test("equalStr, equalInt, and equalFloat", t => {
@@ -32,7 +32,7 @@ test("timeoutAfter and endTestIfNoErr", t => {
 test("pass and error", t => {
   t.plan(2);
   t.pass("workie");
-  t.error(Js.Nullable.null, ~message="no error");
+  t.error(Js.Nullable.null, ~message="ok if error is null");
 });
 
 test("test with a subtest", t => {
