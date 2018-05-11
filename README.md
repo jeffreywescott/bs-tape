@@ -1,6 +1,6 @@
 # bs-tape
 
-[![CircleCI](https://circleci.com/gh/jeffreywescott/bs-tape.svg?style=svg)](https://circleci.com/gh/jeffreywescott/bs-tape) [![Coverage Status](https://coveralls.io/repos/github/jeffreywescott/bs-tape/badge.svg?branch=coverage-quality)](https://coveralls.io/github/jeffreywescott/bs-tape?branch=coverage-quality)
+[![CircleCI](https://circleci.com/gh/jeffreywescott/bs-tape.svg?style=svg)](https://circleci.com/gh/jeffreywescott/bs-tape) [![Coverage Status](https://coveralls.io/repos/github/jeffreywescott/bs-tape/badge.svg?branch=master)](https://coveralls.io/github/jeffreywescott/bs-tape?branch=master)
 
 [BuckleScript][BuckleScript] bindings for [tape][tape].
 
