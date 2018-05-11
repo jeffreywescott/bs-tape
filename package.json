@@ -21,7 +21,7 @@
     "build": "bsb -make-world",
     "watch": "bsb -make-world -w",
     "clean": "bsb -clean-world",
-    "test": "node ./lib/js/example/UseTape.bs.js | ./node_modules/.bin/tap-spec"
+    "test": "yarn build && node ./lib/js/example/UseTape.bs.js | ./node_modules/.bin/tap-spec"
   },
   "dependencies": {
     "tape": "^4.9.0"

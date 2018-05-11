@@ -1,5 +1,7 @@
 # bs-tape
 
+[![CircleCI](https://circleci.com/gh/jeffreywescott/bs-tape.svg?style=svg)](https://circleci.com/gh/jeffreywescott/bs-tape)
+
 [BuckleScript][BuckleScript] bindings for [tape][tape].
 
 There were already [bindings][bs-jest] for [jest][jest], but I find Jest to be pretty annoying to use, and a bit "too magical". So, I made this one.
