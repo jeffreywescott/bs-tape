@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/jeffreywescott/bs-tape.svg?style=svg)](https://circleci.com/gh/jeffreywescott/bs-tape)
 
+[![Coverage Status](https://coveralls.io/repos/github/jeffreywescott/bs-tape/badge.svg?branch=coverage-quality)](https://coveralls.io/github/jeffreywescott/bs-tape?branch=coverage-quality)
+
 [BuckleScript][BuckleScript] bindings for [tape][tape].
 
 There were already [bindings][bs-jest] for [jest][jest], but I find Jest to be pretty annoying to use, and a bit "too magical". So, I made this one.

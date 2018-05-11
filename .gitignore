@@ -1,5 +1,6 @@
 .bsb.lock
 .merlin
+.nyc_output
 .vscode
 lib
 node_modules
