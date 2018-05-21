@@ -14,8 +14,11 @@ type testFuncs = {
   equalStr: (~message: string=?, string, string) => unit,
   equalInt: (~message: string=?, int, int) => unit,
   equalFloat: (~message: string=?, float, float) => unit,
-  comment: string => unit,
+  notEqualStr: (~message: string=?, string, string) => unit,
+  notEqualInt: (~message: string=?, int, int) => unit,
+  notEqualFloat: (~message: string=?, float, float) => unit,
   test: (string, testFuncs => unit) => unit,
+  comment: string => unit,
 };
 
 let test: (string, testFuncs => unit) => unit;

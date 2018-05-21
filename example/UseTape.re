@@ -13,6 +13,13 @@ test("equalStr, equalInt, and equalFloat", t => {
   t.equalFloat(3.14, 3.14, ~message="pi is pi");
 });
 
+test("notEqualStr, notEqualInt, and notEqualFloat", t => {
+  t.plan(3);
+  t.notEqualStr("foo", "bar");
+  t.notEqualInt(12, 13, ~message="numbers are not the same");
+  t.notEqualFloat(3.14, 3.141, ~message="precision matters!");
+});
+
 testSkip("testSkip", t => {
   t.plan(1);
   t.skip("you won't see this");

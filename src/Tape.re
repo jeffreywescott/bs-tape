@@ -14,8 +14,11 @@ type testFuncs = {
   equalStr: (~message: string=?, string, string) => unit,
   equalInt: (~message: string=?, int, int) => unit,
   equalFloat: (~message: string=?, float, float) => unit,
-  comment: string => unit,
+  notEqualStr: (~message: string=?, string, string) => unit,
+  notEqualInt: (~message: string=?, int, int) => unit,
+  notEqualFloat: (~message: string=?, float, float) => unit,
   test: (string, testFuncs => unit) => unit,
+  comment: string => unit,
 };
 
 [@bs.module "tape"]
@@ -56,10 +59,24 @@ external _equalFloat :
   (testFuncs, float, float, Js.Nullable.t(string)) => unit =
   "equal";
 
-[@bs.send] external _comment : (testFuncs, string) => unit = "comment";
+[@bs.send]
+external _notEqualStr :
+  (testFuncs, string, string, Js.Nullable.t(string)) => unit =
+  "notEqual";
+
+[@bs.send]
+external _notEqualInt : (testFuncs, int, int, Js.Nullable.t(string)) => unit =
+  "notEqual";
+
+[@bs.send]
+external _notEqualFloat :
+  (testFuncs, float, float, Js.Nullable.t(string)) => unit =
+  "notEqual";
 
 [@bs.send]
 external _subtest : (testFuncs, string, testFuncs => unit) => unit = "test";
+
+[@bs.send] external _comment : (testFuncs, string) => unit = "comment";
 
 [@bs.module "tape"] [@bs.scope "test"]
 external _testOnly : (string, testFuncs => unit) => unit = "only";
@@ -84,8 +101,14 @@ let rec _assertFactory = t => {
     _equalInt(t, actual, expected, Js.Nullable.fromOption(message)),
   equalFloat: (~message=?, actual, expected) =>
     _equalFloat(t, actual, expected, Js.Nullable.fromOption(message)),
-  comment: s => _comment(t, s),
+  notEqualStr: (~message=?, actual, expected) =>
+    _notEqualStr(t, actual, expected, Js.Nullable.fromOption(message)),
+  notEqualInt: (~message=?, actual, expected) =>
+    _notEqualInt(t, actual, expected, Js.Nullable.fromOption(message)),
+  notEqualFloat: (~message=?, actual, expected) =>
+    _notEqualFloat(t, actual, expected, Js.Nullable.fromOption(message)),
   test: (name, f) => _subtest(t, name, t => f(_assertFactory(t))),
+  comment: s => _comment(t, s),
 };
 
 let test = (name, f) => _test(name, t => f(_assertFactory(t)));
