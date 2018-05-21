@@ -20,6 +20,26 @@ test("notEqualStr, notEqualInt, and notEqualFloat", t => {
   t.notEqualFloat(3.14, 3.141, ~message="precision matters!");
 });
 
+exception MyEx(string);
+
+test("throws, throwsAndMatches, doesNotThrow, and doesNotThrowAndMatch", t => {
+  t.plan(4);
+  let f = () => raise(MyEx("simulated error"));
+  t.throws(f);
+  t.throwsAndMatches(
+    f,
+    "simulated",
+    ~message="should throw a simulated exception",
+  );
+  let g = () => ();
+  t.doesNotThrow(g);
+  t.doesNotThrowAndMatch(
+    g,
+    "simulated",
+    ~message="should not throw a simulated exception",
+  );
+});
+
 testSkip("testSkip", t => {
   t.plan(1);
   t.skip("you won't see this");

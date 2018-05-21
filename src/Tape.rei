@@ -17,6 +17,10 @@ type testFuncs = {
   notEqualStr: (~message: string=?, string, string) => unit,
   notEqualInt: (~message: string=?, int, int) => unit,
   notEqualFloat: (~message: string=?, float, float) => unit,
+  throws: (~message: string=?, unit => unit) => unit,
+  throwsAndMatches: (~message: string=?, unit => unit, string) => unit,
+  doesNotThrow: (~message: string=?, unit => unit) => unit,
+  doesNotThrowAndMatch: (~message: string=?, unit => unit, string) => unit,
   test: (string, testFuncs => unit) => unit,
   comment: string => unit,
 };

@@ -17,6 +17,10 @@ type testFuncs = {
   notEqualStr: (~message: string=?, string, string) => unit,
   notEqualInt: (~message: string=?, int, int) => unit,
   notEqualFloat: (~message: string=?, float, float) => unit,
+  throws: (~message: string=?, unit => unit) => unit,
+  throwsAndMatches: (~message: string=?, unit => unit, string) => unit,
+  doesNotThrow: (~message: string=?, unit => unit) => unit,
+  doesNotThrowAndMatch: (~message: string=?, unit => unit, string) => unit,
   test: (string, testFuncs => unit) => unit,
   comment: string => unit,
 };
@@ -74,6 +78,18 @@ external _notEqualFloat :
   "notEqual";
 
 [@bs.send]
+external _throws :
+  (testFuncs, unit => unit, Js.Nullable.t(Js.Re.t), Js.Nullable.t(string)) =>
+  unit =
+  "throws";
+
+[@bs.send]
+external _doesNotThrow :
+  (testFuncs, unit => unit, Js.Nullable.t(Js.Re.t), Js.Nullable.t(string)) =>
+  unit =
+  "doesNotThrow";
+
+[@bs.send]
 external _subtest : (testFuncs, string, testFuncs => unit) => unit = "test";
 
 [@bs.send] external _comment : (testFuncs, string) => unit = "comment";
@@ -107,6 +123,24 @@ let rec _assertFactory = t => {
     _notEqualInt(t, actual, expected, Js.Nullable.fromOption(message)),
   notEqualFloat: (~message=?, actual, expected) =>
     _notEqualFloat(t, actual, expected, Js.Nullable.fromOption(message)),
+  throws: (~message=?, f) =>
+    _throws(t, f, Js.Nullable.null, Js.Nullable.fromOption(message)),
+  throwsAndMatches: (~message=?, f, expected) =>
+    _throws(
+      t,
+      f,
+      Js.Nullable.return(Js.Re.fromString(expected)),
+      Js.Nullable.fromOption(message),
+    ),
+  doesNotThrow: (~message=?, f) =>
+    _doesNotThrow(t, f, Js.Nullable.null, Js.Nullable.fromOption(message)),
+  doesNotThrowAndMatch: (~message=?, f, expected) =>
+    _doesNotThrow(
+      t,
+      f,
+      Js.Nullable.return(Js.Re.fromString(expected)),
+      Js.Nullable.fromOption(message),
+    ),
   test: (name, f) => _subtest(t, name, t => f(_assertFactory(t))),
   comment: s => _comment(t, s),
 };
