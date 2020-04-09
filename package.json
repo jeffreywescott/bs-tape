@@ -25,16 +25,16 @@
     "test:coverage": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
   "dependencies": {
-    "tape": "^4.9.0"
+    "tape": "^4.13.2"
   },
   "peerDependencies": {
-    "bs-platform": "^3.0.0"
+    "bs-platform": "^7.2.2"
   },
   "devDependencies": {
-    "bs-platform": "^3.0.0",
+    "bs-platform": "^7.2.2",
     "coveralls": "^3.0.1",
     "nyc": "^11.7.3",
-    "tap-spec": "^4.1.1"
+    "tap-spec": "^5.0.0"
   },
   "nyc": {
     "include": [
