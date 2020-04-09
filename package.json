@@ -21,6 +21,7 @@
     "build": "bsb -make-world",
     "build:watch": "bsb -make-world -w",
     "build:clean": "bsb -clean-world",
+    "clean": "bsb -clean-world",
     "test": "yarn build && ./node_modules/.bin/nyc --all node ./lib/js/example/UseTape.bs.js | ./node_modules/.bin/tap-spec",
     "test:coverage": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
@@ -28,10 +29,10 @@
     "tape": "^4.9.0"
   },
   "peerDependencies": {
-    "bs-platform": "^3.0.0"
+    "bs-platform": "^7.2.2"
   },
   "devDependencies": {
-    "bs-platform": "^3.0.0",
+    "bs-platform": "^7.2.2",
     "coveralls": "^3.0.1",
     "nyc": "^11.7.3",
     "tap-spec": "^4.1.1"
